@@ -1,6 +1,29 @@
+$bgColor1: #28293d;
+$fontColor1: #f47183;
+$fontColor2: #4d3f59;
+$isPrimary: #f47183;
 .App {
+  .primary-bg {
+    background: $isPrimary;
+    color: #fff;
+  }
   .level-item {
     padding: 24px;
+    background: $bgColor1;
+    color: $fontColor1;
+    border: 12px solid rgba(244, 113, 131, 0.12);
+    .title {
+      color: $fontColor1;
+    }
+    &:first-child {
+      border-radius: 4px 0 0 4px;
+    }
+    &:last-child {
+      border-radius: 0 4px 4px 0;
+    }
+    @media only screen and (max-width: 600px) {
+      border-radius: 4px;
+    }
   }
   .select {
     width: 100%;
