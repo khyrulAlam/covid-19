@@ -29,3 +29,8 @@ export interface ICountryResponse {
   recovered: number;
   critical: number;
 }
+
+export interface ICountry {
+  value: string;
+  label: string;
+}
