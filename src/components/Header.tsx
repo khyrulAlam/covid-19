@@ -1,6 +1,6 @@
-import React from "react";
-import { IAllInformationData, IAllInformation } from "../models/DataService";
-import { API } from "../config";
+import React from 'react';
+import { IAllInformationData, IAllInformation } from '../models/DataService';
+import { API } from '../config';
 
 class Header extends React.Component<{}, IAllInformationData> {
   constructor(props: any) {
@@ -30,19 +30,25 @@ class Header extends React.Component<{}, IAllInformationData> {
               <div className="level-item has-text-centered card">
                 <div>
                   <p className="heading">Total Cases</p>
-                  <p className="title">{this.state.cases}</p>
+                  <p className="title">
+                    {this.state.cases?.toLocaleString('en-US')}
+                  </p>
                 </div>
               </div>
               <div className="level-item has-text-centered card">
                 <div>
                   <p className="heading">Total Deaths</p>
-                  <p className="title">{this.state.deaths}</p>
+                  <p className="title">
+                    {this.state.deaths?.toLocaleString('en-US')}
+                  </p>
                 </div>
               </div>
               <div className="level-item has-text-centered card">
                 <div>
                   <p className="heading">Total Recovery</p>
-                  <p className="title">{this.state.recovered}</p>
+                  <p className="title">
+                    {this.state.recovered?.toLocaleString('en-US')}
+                  </p>
                 </div>
               </div>
             </nav>
