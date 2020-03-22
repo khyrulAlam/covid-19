@@ -1,5 +1,11 @@
 import React from 'react';
-import { ICountryResponse, ICountry } from '../models/DataService';
+import { API } from '../config';
+import {
+  ICountryResponse,
+  ICountry,
+  CountryData,
+  GetLocalStorageData
+} from '../models/DataService';
 import CountryList from './CountryList';
 import Card from './Card';
 import ErrorNotification from './ErrorNotification';
@@ -31,22 +37,45 @@ class Contents extends React.Component<{}, IState> {
    */
   fetchCountry = async () => {
     let response: ICountryResponse[] = await (
-      await fetch('https://corona.lmao.ninja/countries ')
+      await fetch(API.CONVID_API_COUNTRIES)
     ).json();
-    this.setState({ responseData: response, viewData: response });
+    let finalData: ICountryResponse[] = this.checkBookmarkCountries(response);
+    this.setState({ responseData: response, viewData: finalData });
   };
+  /*
+   * Check bookmark **
+   */
+
+  checkBookmarkCountries = (response: ICountryResponse[]) => {
+    let bookmarkCountries: string[] = GetLocalStorageData(API.BOOKMARK_KEY);
+    let finalData: ICountryResponse[] = [];
+    response.forEach(v => {
+      let data: any = new CountryData(v);
+      if (!(bookmarkCountries.indexOf(data.country) !== -1)) {
+        finalData.push(data);
+      } else {
+        data.isBookmark = true;
+        finalData.unshift(data);
+      }
+    });
+    return finalData;
+  };
+
   /*
    * select country from dropdown **
    */
   selectCountryEvent = (selectValue: ICountry | null) => {
     this.setState({ selectCountry: selectValue });
     //if doesn't select any country
-    if (!selectValue)
-      return this.setState({
-        viewData: this.state.responseData,
+    if (!selectValue) {
+      let finalData = this.checkBookmarkCountries(this.state.responseData);
+      this.setState({
+        viewData: finalData,
         isError: false
       });
-
+      return;
+    }
+    console.log('what the hell ==== !!!');
     // find select country info from response data
     let findCountryData:
       | ICountryResponse
@@ -62,16 +91,18 @@ class Contents extends React.Component<{}, IState> {
       });
 
     //if find desire country value
-    this.setState({ viewData: [findCountryData], isError: false });
+    let finalData = this.checkBookmarkCountries([findCountryData]);
+    this.setState({ viewData: finalData, isError: false });
   };
   /*
    * Clear Error Message **
    */
   clearErrorMessage = () => {
+    let finalData = this.checkBookmarkCountries(this.state.responseData);
     this.setState({
       selectCountry: null,
       isError: false,
-      viewData: this.state.responseData
+      viewData: finalData
     });
   };
   render() {

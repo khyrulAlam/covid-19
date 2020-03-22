@@ -5,6 +5,7 @@ $fontColor2: #4d3f59;
 $fontColor3: #9e9e9e;
 $fontColor4: #62a064;
 $fontColor5: #5f5779;
+$fontColor6: #ffeb3b;
 .App {
   .primary-bg {
     background: $isPrimary;
@@ -78,18 +79,35 @@ $fontColor5: #5f5779;
       border-radius: 4px;
       background: $bgColor1;
       border: 2px solid #413246;
-      h3 {
-        text-transform: uppercase;
-        text-align: center;
-        border-bottom: 1px dashed #63657b6b;
-        letter-spacing: 2px;
-        font-size: 26px;
-        font-weight: 800;
-        color: $fontColor5;
-        margin: 0;
-        margin-bottom: 10px;
-        padding: 0;
-        padding-bottom: 10px;
+      .card-top {
+        position: relative;
+        h3 {
+          text-transform: uppercase;
+          text-align: center;
+          border-bottom: 1px dashed #63657b6b;
+          letter-spacing: 2px;
+          font-size: 26px;
+          font-weight: 800;
+          color: $fontColor5;
+          margin: 0;
+          margin-bottom: 10px;
+          padding: 0;
+          padding-bottom: 10px;
+        }
+        .card-icon {
+          position: absolute;
+          top: 0;
+          right: 0;
+          span {
+            margin-right: 5px;
+            svg {
+              width: 14px;
+            }
+          }
+          .mark {
+            color: $fontColor6;
+          }
+        }
       }
       p {
         background: rgba(244, 113, 131, 0.05);
