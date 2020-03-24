@@ -99,13 +99,21 @@ $fontColor6: #ffeb3b;
           top: 0;
           right: 0;
           span {
+            cursor: pointer;
             margin-right: 5px;
             svg {
-              width: 14px;
+              width: 10px;
             }
           }
           .mark {
             color: $fontColor6;
+          }
+          .graph-chart {
+            margin-right: 10px;
+            color: #717171;
+            svg {
+              width: 20px;
+            }
           }
         }
       }
@@ -146,6 +154,13 @@ $fontColor6: #ffeb3b;
       &.is-right {
         justify-content: center !important;
       }
+    }
+  }
+  @media print, screen and (min-width: 769px) {
+    .modal-content {
+      margin: 0 auto;
+      max-height: calc(100vh - 40px);
+      width: calc(100vw - 20vw);
     }
   }
 }

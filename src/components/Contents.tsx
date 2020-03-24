@@ -9,6 +9,7 @@ import {
 import CountryList from './CountryList';
 import Card from './Card';
 import ErrorNotification from './ErrorNotification';
+import GraphModal from './GraphModal';
 
 interface IState {
   viewData: ICountryResponse[];
@@ -16,6 +17,8 @@ interface IState {
   selectCountry: ICountry | null;
   errorMessage: string;
   isError: boolean;
+  isModalOpen: boolean;
+  graphCountry: string;
 }
 
 class Contents extends React.Component<{}, IState> {
@@ -26,7 +29,9 @@ class Contents extends React.Component<{}, IState> {
       responseData: [],
       selectCountry: null,
       errorMessage: '',
-      isError: false
+      isError: false,
+      isModalOpen: false,
+      graphCountry: ''
     };
   }
   componentDidMount() {
@@ -105,6 +110,21 @@ class Contents extends React.Component<{}, IState> {
       viewData: finalData
     });
   };
+
+  // open modal for graph 📊
+  openModalWithCountryGraph = (country?) => {
+    console.log(country);
+    let html = document.querySelector('html') as HTMLElement;
+    if (country) {
+      html.classList.add('is-clipped');
+    } else {
+      html.classList.remove('is-clipped');
+    }
+    this.setState({
+      isModalOpen: !this.state.isModalOpen,
+      graphCountry: country
+    });
+  };
   render() {
     return (
       <React.Fragment>
@@ -122,12 +142,24 @@ class Contents extends React.Component<{}, IState> {
             ) : (
               <div className="columns is-multiline is-mobile is-4">
                 {this.state.viewData.map((info, index) => (
-                  <Card info={info} key={index} />
+                  <Card
+                    info={info}
+                    key={index}
+                    openModalWithCountryGraph={this.openModalWithCountryGraph}
+                  />
                 ))}
               </div>
             )}
           </div>
         </section>
+        {this.state.isModalOpen ? (
+          <GraphModal
+            openModalWithCountryGraph={this.openModalWithCountryGraph}
+            selectCountry={this.state.graphCountry}
+          />
+        ) : (
+          ''
+        )}
       </React.Fragment>
     );
   }

@@ -15,6 +15,7 @@ function BookMark(props: IProps) {
   if (!isBookmark) {
     return (
       <span
+        title="Bookmark Country"
         onClick={() => {
           handleBookmark(countryName);
         }}
@@ -40,6 +41,7 @@ function BookMark(props: IProps) {
   } else {
     return (
       <span
+        title="Bookmark Country"
         className="mark"
         onClick={() => {
           handleBookmark(countryName);
