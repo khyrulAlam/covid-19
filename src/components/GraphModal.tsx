@@ -65,7 +65,7 @@ class GraphModal extends React.Component<IProps, IState> {
   prepareGraphData = async () => {
     var ctx = document.getElementById('myChart');
     new Chart(ctx, {
-      type: 'bar',
+      type: 'line',
       data: {
         labels: this.state.labels,
         datasets: [
@@ -75,7 +75,6 @@ class GraphModal extends React.Component<IProps, IState> {
             borderColor: '#9e9e9e',
             barPercentage: 0.5,
             barThickness: 6,
-
             data: this.state.dataSets.cases,
             fill: false
           },
@@ -85,7 +84,6 @@ class GraphModal extends React.Component<IProps, IState> {
             borderColor: '#f47183',
             barPercentage: 0.5,
             barThickness: 6,
-
             data: this.state.dataSets.deaths,
             fill: false
           },
@@ -95,7 +93,6 @@ class GraphModal extends React.Component<IProps, IState> {
             borderColor: '#62a064',
             barPercentage: 0.5,
             barThickness: 6,
-
             data: this.state.dataSets.recovered,
             fill: false
           }
@@ -110,32 +107,42 @@ class GraphModal extends React.Component<IProps, IState> {
         <div className="modal is-active">
           <div className="modal-background"></div>
 
-          {this.state.loading ? (
-            <div style={{ position: 'relative' }}>
-              <img
-                src="https://loading.io/mod/spinner/rosary/index.svg"
-                alt="loading"
-              />
-            </div>
-          ) : (
-            ''
-          )}
-          <div
-            className="modal-content"
-            style={{
-              background: '#28293d',
-              color: '#f47183',
-              border: '12px solid rgba(244, 113, 131, 0.12)'
-            }}
-          >
-            <div style={{ textAlign: 'center', padding: '20px 0 25px 0' }}>
+          <div className="modal-content">
+            {this.state.loading ? (
+              <div className="graph-loading">
+                <img src="./loading.svg" alt="loading" />
+              </div>
+            ) : (
+              ''
+            )}
+            <div className="percentage-info">
               <img
                 src={this.state.countryInfo?.countryInfo.flag}
                 alt={this.state.countryInfo?.country}
                 width="50"
               />
-              <h3>Today Cases - {this.state.countryInfo?.todayCases}</h3>
-              <h3>Today Deaths - {this.state.countryInfo?.todayDeaths}</h3>
+              <h3 className="recovered">
+                Recovered -{' '}
+                <span className="recover-tag">
+                  {(
+                    (this.state.countryInfo?.recovered /
+                      this.state.countryInfo?.cases) *
+                    100
+                  ).toFixed(2)}
+                  %
+                </span>
+              </h3>
+              <h3 className="deaths">
+                Today Deaths -{' '}
+                <span className="number-tag death-tag">
+                  {(
+                    (this.state.countryInfo?.todayDeaths /
+                      this.state.countryInfo?.cases) *
+                    100
+                  ).toFixed(2)}
+                  %
+                </span>
+              </h3>
             </div>
             <canvas id="myChart"></canvas>
           </div>
