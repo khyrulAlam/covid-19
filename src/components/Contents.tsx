@@ -12,6 +12,7 @@ import ErrorNotification from './ErrorNotification';
 import GraphModal from './GraphModal';
 
 interface IState {
+  isLoadingData: boolean;
   viewData: ICountryResponse[];
   responseData: ICountryResponse[];
   selectCountry: ICountry | null;
@@ -25,6 +26,7 @@ class Contents extends React.Component<{}, IState> {
   constructor(props: any) {
     super(props);
     this.state = {
+      isLoadingData: true,
       viewData: [],
       responseData: [],
       selectCountry: null,
@@ -45,7 +47,11 @@ class Contents extends React.Component<{}, IState> {
       await fetch(API.CONVID_API_COUNTRIES)
     ).json();
     let finalData: ICountryResponse[] = this.checkBookmarkCountries(response);
-    this.setState({ responseData: response, viewData: finalData });
+    this.setState({
+      responseData: response,
+      viewData: finalData,
+      isLoadingData: false
+    });
   };
   /*
    * Check bookmark **
@@ -113,7 +119,6 @@ class Contents extends React.Component<{}, IState> {
 
   // open modal for graph 📊
   openModalWithCountryGraph = (country?) => {
-    console.log(country);
     let html = document.querySelector('html') as HTMLElement;
     if (country) {
       html.classList.add('is-clipped');
@@ -132,26 +137,34 @@ class Contents extends React.Component<{}, IState> {
           selectCountryEvent={this.selectCountryEvent}
           selectCountry={this.state.selectCountry}
         />
-        <section className="section country-data">
-          <div className="container">
-            {this.state.isError ? (
-              <ErrorNotification
-                errorMessage={this.state.errorMessage}
-                clearErrorMessage={this.clearErrorMessage}
-              />
-            ) : (
-              <div className="columns is-multiline is-mobile is-4">
-                {this.state.viewData.map((info, index) => (
-                  <Card
-                    info={info}
-                    key={index}
-                    openModalWithCountryGraph={this.openModalWithCountryGraph}
-                  />
-                ))}
-              </div>
-            )}
+
+        {this.state.isLoadingData ? (
+          <div className="loading-data">
+            <img src="./loading.svg" alt="loading" />
           </div>
-        </section>
+        ) : (
+          <section className="section country-data">
+            <div className="container">
+              {this.state.isError ? (
+                <ErrorNotification
+                  errorMessage={this.state.errorMessage}
+                  clearErrorMessage={this.clearErrorMessage}
+                />
+              ) : (
+                <div className="columns is-multiline is-mobile is-4">
+                  {this.state.viewData.map((info, index) => (
+                    <Card
+                      info={info}
+                      key={index}
+                      openModalWithCountryGraph={this.openModalWithCountryGraph}
+                    />
+                  ))}
+                </div>
+              )}
+            </div>
+          </section>
+        )}
+
         {this.state.isModalOpen ? (
           <GraphModal
             openModalWithCountryGraph={this.openModalWithCountryGraph}
