@@ -11,7 +11,7 @@ interface IState {
   dataSets: {
     cases: string[];
     deaths: string[];
-    // recovered: string[];
+    recovered: string[];
   };
   countryInfo: any | null;
   loading: boolean;
@@ -23,11 +23,11 @@ class GraphModal extends React.Component<IProps, IState> {
       labels: [],
       dataSets: {
         cases: [],
-        deaths: []
-        // recovered: []
+        deaths: [],
+        recovered: [],
       },
       countryInfo: null,
-      loading: true
+      loading: true,
     };
   }
   componentDidMount() {
@@ -50,15 +50,15 @@ class GraphModal extends React.Component<IProps, IState> {
     let labels = Object.keys(response2.timeline.cases);
     let cases: string[] = Object.values(response2.timeline.cases);
     let deaths: string[] = Object.values(response2.timeline.deaths);
-    // let recovered: string[] = Object.values(response2.timeline.recovered);
+    let recovered: string[] = Object.values(response2.timeline.recovered);
     this.setState({
       countryInfo: response,
       labels: labels,
       dataSets: {
         cases: cases,
-        deaths: deaths
-        // recovered: recovered
-      }
+        deaths: deaths,
+        recovered: recovered,
+      },
     });
     return;
   };
@@ -76,7 +76,7 @@ class GraphModal extends React.Component<IProps, IState> {
             barPercentage: 0.5,
             barThickness: 6,
             data: this.state.dataSets.cases,
-            fill: false
+            fill: false,
           },
           {
             label: 'Deaths',
@@ -85,19 +85,19 @@ class GraphModal extends React.Component<IProps, IState> {
             barPercentage: 0.5,
             barThickness: 6,
             data: this.state.dataSets.deaths,
-            fill: false
-          }
-          // {
-          //   label: 'Recovered',
-          //   backgroundColor: '#62a064',
-          //   borderColor: '#62a064',
-          //   barPercentage: 0.5,
-          //   barThickness: 6,
-          //   data: this.state.dataSets.recovered,
-          //   fill: false
-          // }
-        ]
-      }
+            fill: false,
+          },
+          {
+            label: 'Recovered',
+            backgroundColor: '#62a064',
+            borderColor: '#62a064',
+            barPercentage: 0.5,
+            barThickness: 6,
+            data: this.state.dataSets.recovered,
+            fill: false,
+          },
+        ],
+      },
     });
     return;
   };
@@ -136,7 +136,7 @@ class GraphModal extends React.Component<IProps, IState> {
                 Today Deaths -{' '}
                 <span className="number-tag death-tag">
                   {(
-                    (this.state.countryInfo?.todayDeaths /
+                    (this.state.countryInfo?.deaths /
                       this.state.countryInfo?.cases) *
                     100
                   ).toFixed(2)}
